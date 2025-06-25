@@ -1,4 +1,12 @@
 --[[
+  TODOS:
+  - Setup tmux workflow
+  - Set up debugging workflow
+  - 
+]]
+--
+
+--[[
 
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
@@ -326,6 +334,10 @@ require('lazy').setup({
         harpoon:list():next()
       end)
     end,
+  },
+  {
+    'prettier/vim-prettier',
+    config = function() end,
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
