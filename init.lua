@@ -1,9 +1,8 @@
 --[[
   TODOS:
-  - Setup tmux workflow
   - Set up debugging workflow
   - Configure keymaps from VS Code
-  - Configure Copilot plugins
+  - Setup tmux workflow
 ]]
 --
 
@@ -264,6 +263,7 @@ rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
+  'prettier/vim-prettier', -- Formatting for JavaScript files
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -340,8 +340,11 @@ require('lazy').setup({
     end,
   },
   {
-    'prettier/vim-prettier',
-    config = function() end,
+    'github/copilot.vim',
+    config = function()
+      vim.keymap.set('i', '<C-L>', '<Plug>(copilot-accept-word)', { desc = 'Copilot: Accept Word' })
+      vim.keymap.set('i', '<M-C-L>', '<Plug>(copilot-accept-line)', { desc = 'Copilot: Accept Line' })
+    end,
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
