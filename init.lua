@@ -1,6 +1,5 @@
 --[[
   TODOS:
-  - Set up debugging workflow
   - Configure keymaps from VS Code
   - Setup tmux workflow
 ]]
@@ -205,6 +204,10 @@ vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 -- Save file
 vim.keymap.set('n', '<leader>w', '<cmd>w<CR>', { desc = '[W]rite File' })
 
+-- Quickfix keymaps
+vim.keymap.set('n', '<M-j>', '<cmd>cnext<CR>', { desc = '[J]ump to next quickfix item' })
+vim.keymap.set('n', '<M-k>', '<cmd>cprev<CR>', { desc = '[K]jump to previous quickfix item' })
+
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
 --
@@ -264,6 +267,9 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
   'prettier/vim-prettier', -- Formatting for JavaScript files
+  'tpope/vim-fugitive', -- Git integration for Vim
+  'theHamsta/nvim-dap-virtual-text',
+  'nvim-neotest/nvim-nio',
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -291,13 +297,23 @@ require('lazy').setup({
     'lewis6991/gitsigns.nvim',
     opts = {
       signs = {
-        add = { text = '+' },
-        change = { text = '~' },
+        add = { text = '|' },
+        change = { text = '|' },
         delete = { text = '_' },
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
       },
+      current_line_blame_opts = {
+        delay = 500,
+      },
     },
+    config = function()
+      vim.keymap.set('n', '<leader>gd', ':Gitsigns diffthis<CR>', { desc = '[G]it [D]iff This' })
+      vim.keymap.set('n', '<leader>gp', ':Gitsigns preview_hunk_inline<CR>', { desc = '[G]it [P]review Hunk' })
+      vim.keymap.set('n', '<leader>gr', ':Gitsigns reset_hunk<CR>', { desc = '[G]it [R]eset Hunk' })
+      vim.keymap.set('n', '<leader>gt', ':Gitsigns toggle_current_line_blame<CR>', { desc = '[G]it [T]oggle Current Line Blame' })
+      vim.keymap.set('n', '<leader>gw', ':Gitsigns toggle_word_diff<CR>', { desc = '[G]it [W]ord Diff' })
+    end,
   },
   {
     'ThePrimeagen/harpoon',
@@ -345,6 +361,13 @@ require('lazy').setup({
       vim.keymap.set('i', '<C-L>', '<Plug>(copilot-accept-word)', { desc = 'Copilot: Accept Word' })
       vim.keymap.set('i', '<M-C-L>', '<Plug>(copilot-accept-line)', { desc = 'Copilot: Accept Line' })
     end,
+  },
+  {
+    'rcarriga/nvim-dap-ui',
+    dependencies = {
+      'mfussenegger/nvim-dap',
+      'nvim-neotest/nvim-nio',
+    },
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
